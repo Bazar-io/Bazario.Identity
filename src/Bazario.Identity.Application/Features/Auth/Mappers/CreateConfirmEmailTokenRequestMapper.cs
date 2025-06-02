@@ -1,7 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Mappers;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Features.Auth.DTO.RequestModels;
-using Bazario.Identity.Application.Identity.Options;
+using Bazario.Identity.Application.Identity.Options.ConfirmEmailToken;
 using Bazario.Identity.Domain.Common.Timestamps;
 using Bazario.Identity.Domain.Common.TokenHashes;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
@@ -39,21 +39,10 @@ namespace Bazario.Identity.Application.Features.Auth.Mappers
 
             var tokenId = new ConfirmEmailTokenId(Guid.NewGuid());
 
-            // Generate UTC now timestamp
-
-            var utcNowResult = Timestamp.UtcNow();
-
-            if (utcNowResult.IsFailure)
-            {
-                return Result.Failure<ConfirmEmailToken>(utcNowResult.Error);
-            }
-
-            var utcNow = utcNowResult.Value;
-
             // Calculate expiration timestamp
 
             var expiresAtResult = Timestamp.Create(
-                utcNow.Value.Add(
+                DateTime.UtcNow.Add(
                     TimeSpan.FromDays(_settings.ExpirationTimeInDays)
                     ));
 
