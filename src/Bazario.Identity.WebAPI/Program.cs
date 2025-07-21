@@ -8,6 +8,8 @@ using Bazario.Identity.Infrastructure;
 using Bazario.Identity.Infrastructure.Extensions;
 using Bazario.Identity.WebAPI.Extensions;
 using Bazario.Identity.WebAPI.Extensions.DI;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -56,6 +58,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("_health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.SeedRoles().Wait();
 app.SeedOwnerIfNotSeeded().Wait();

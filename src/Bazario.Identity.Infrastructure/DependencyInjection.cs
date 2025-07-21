@@ -22,6 +22,8 @@ namespace Bazario.Identity.Infrastructure
 
             services.AddMessageConsumers();
 
+            services.ConfigureAppHealthChecks();
+
             return services;
         }
     }
